@@ -1,0 +1,9 @@
+#!/bin/bash
+
+alias pods="kubectl get pods --output=wide --all-namespaces"
+alias nodes="kubectl get nodes --all-namespaces"
+alias services="kubectl get services --all-namespaces"
+alias cjobs="kubectl get cronjobs --all-namespaces"
+alias deployments="kubectl get deployments --all-namespaces"
+
+source <(kubectl completion bash)

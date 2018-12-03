@@ -1,0 +1,8 @@
+.vagrant
+*.retry
+*swp
+
+ansible/default/root/.kube/config
+ansible/roles/geerlingguy*
+ansible/roles/ansible-ThoTeam*
+ansible/roles/savoirfairelinux*

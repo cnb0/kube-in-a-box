@@ -1,0 +1,9 @@
+#- src: ansiblebit.oracle-java
+
+- src: geerlingguy.apache
+- src: geerlingguy.java
+- src: geerlingguy.jenkins
+- src: geerlingguy.docker
+- src: geerlingguy.kubernetes
+#- src: savoirfairelinux.nexus3-oss
+- src: ansible-ThoTeam.nexus3-oss

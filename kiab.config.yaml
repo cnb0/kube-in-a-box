@@ -1,0 +1,8 @@
+vm_ip_address: 192.168.100.100
+vm_memory: 4096
+vm_cpu: 4
+
+use_apache: false 
+use_jenkins: false
+use_kubernetes: true 
+use_nexus: true

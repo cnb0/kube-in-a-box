@@ -1,0 +1,4 @@
+{
+    "hosts": ["unix:///var/run/docker.sock", "tcp://0.0.0.0:2375"],
+    "insecure-registries": [ "kiab.local:5000", "192.168.100.100:5000"] 
+}

@@ -1,0 +1,21 @@
+- file:
+    state: directory
+    path: /etc/systemd/system/docker.service.d/
+
+- name: docker systemd override 
+  template:
+    src: docker/docker.conf
+    dest: /etc/systemd/system/docker.service.d/docker.conf
+  notify:
+    - systemctl daemon-reload
+    - restart docker 
+
+- name: docker daemon.json template
+  template:
+    src: docker/daemon.json
+    dest: /etc/docker/daemon.json
+  notify:
+    - restart docker 
+
+- name: flush handler 
+  meta: flush_handlers

@@ -1,0 +1,72 @@
+- hosts: all
+  become: yes
+  become_user: root
+  pre_tasks:
+    - name: Remove swapfile from /etc/fstab
+      mount:
+        name: swap
+        fstype: swap
+        state: absent
+    - name: Disable swap
+      shell: swapoff -a
+    - name: Install base packages
+      package:
+        name: "{{item}}"
+      with_items:
+        - nc
+        - lsof 
+        - tcpdump 
+        - vim
+        - htop
+        - zip
+        - unzip
+  vars_files:
+    - ../kiab.config.yaml 
+  vars:
+    java_packages:
+      - java-1.8.0-openjdk-devel
+
+    nexus_version: 3.7.1-02
+    nexus_timezone: 'UTC'
+    nexus_anonymous_access: true
+    public_hostname: 'kiab.local'
+    nexus_admin_password: 'admin123'
+    nexus_config_docker: true
+    nexus_docker_hosted_port: 5000
+    _nexus_repos_docker_defaults:
+      blob_store: "{{ nexus_blob_names.docker.blob }}"
+      force_basic_auth: false
+      strict_content_validation: true
+      version_policy: release  # release, snapshot or mixed
+      layout_policy: strict  # strict or permissive
+      write_policy: allow_once  # one of "allow", "allow_once" or "deny"
+      maximum_component_age: 1440  # Nexus gui default. For proxies only
+      maximum_metadata_age: 1440  # Nexus gui default. For proxies only
+      negative_cache_enabled: true  # Nexus gui default. For proxies only
+      negative_cache_ttl: 1440  # Nexus gui default. For proxies only
+    nexus_nuget_api_key_realm: true
+    nexus_npm_bearer_token_realm: true
+    nexus_docker_bearer_token_realm: true
+
+    kubernetes_apiserver_advertise_address: "{{ vm_ip_address }}"
+    kubernetes_allow_pods_on_master: true
+    kubernetes_enable_web_ui: true
+
+  roles:
+    - role: geerlingguy.apache
+      apache_create_vhosts: no
+      when: use_apache 
+    - role: geerlingguy.java
+      when: use_nexus or use_jenkins 
+    - role: geerlingguy.jenkins
+      when: use_jenkins 
+    - role: geerlingguy.docker
+      when: use_kubernetes 
+    - role: post-docker-config
+      when: use_kubernetes
+    - role: geerlingguy.kubernetes
+      when: use_kubernetes 
+    - role: kube-post-config
+      when: use_kubernetes 
+    - role: ansible-ThoTeam.nexus3-oss
+      when: use_nexus 

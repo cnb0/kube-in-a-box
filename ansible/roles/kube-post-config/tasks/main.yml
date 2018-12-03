@@ -1,0 +1,40 @@
+- name: create kube deployment dirs
+  file: 
+    state: directory
+    owner: root
+    group: root
+    path: "{{ item }}"
+  with_items:
+    - "{{ kube_deployment_dirs }}"
+
+
+- name: kubectl secrets
+  shell: kubectl get secrets
+  register: kube_secrets
+
+- name: create kube nexus-local-regcred regsecret
+  shell: kubectl create secret docker-registry nexus-local-regcred --docker-server='kiab.local:5000' --docker-username=admin --docker-password=admin123 --docker-email=foo@bar.com
+  when: "'nexus-local-regcred' not in kube_secrets.stdout" 
+
+- package:
+    name: bash-completion
+
+- name: template bash alais
+  template:
+    src: kube_bash_alias
+    dest: /etc/profile.d/kube_bash_alias.sh
+    mode: 0755
+  
+- name: create kubernetes dashboard deployment
+  template:
+    src: kubernetes-dashboard.yaml 
+    dest: "{{master_deployments_dir}}/kubernetes-dashboard.yaml"
+
+- name: create the kube dashboard
+  shell: "kubectl apply -f {{master_deployments_dir}}/kubernetes-dashboard.yaml"
+
+- name: copy kubeconfig from root to /home/vagrant
+  fetch:
+    src: /root/.kube/config 
+    dest: ~/.kube/config-kiab 
+    flat: true
