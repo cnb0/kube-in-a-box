@@ -12,20 +12,20 @@ This will install Kubernetes, Docker and an OSS Nexus server for use as a docker
 If you are on a Mac, simply run my [mac-dev-setup](https://github.com/nickmaccarthy/mac-dev-setup) and the pre-reqs should be met.
 
 ## Whats included?
-OS: Cent OS 7
+Operating System: Cent OS 7
 Software:
-    * Kubernetes 
-    * Nexus 3.7x
-    * Docker 
+* Kubernetes 
+* Nexus 3.7x
+* Docker 
 
 ## Usage:
 To get started, simply clone this repo, then within it from CLI, run the command `vagrant up`.  This should download the VM image, start it and run the "provisioners" which actually do all the setup of the verious services for KIAB.
 
 Some useful vagrant commands:
-    * `vagrant up` - Starts and provisions the VM on your first run.
-    * `vagrant provision` - Runs the provisioners, i.e. Ansible scripts that configure this system
-    * `vagrant halt` - Suspends the VM
-    * `vagrant snapshot` - Snapshots the VM in its current state
+* `vagrant up` - Starts and provisions the VM on your first run.
+* `vagrant provision` - Runs the provisioners, i.e. Ansible scripts that configure this system
+* `vagrant halt` - Suspends the VM
+* `vagrant snapshot` - Snapshots the VM in its current state
 
 ## Kubectl 
 `kubectl` is a command line utility that is extremely useful for managing Kubernetes.  You can easily install it on your mac with brew, or you can use my [mac-dev-setup](https://github.com/nickmaccarthy/mac-dev-setup) playbook which installs it for you as well.  With `kubectl` installed and configured, you can now manage the kubernetes cluster runningon KIAB from your own mac's terminal.  When KIAB runs intially a `kubeconfig` is created which is synced to your local machine.  You can simply place this file `./kube-config` under `~/.kube/config` and your default config will now point to KIAB.
