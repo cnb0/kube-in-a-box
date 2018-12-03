@@ -54,9 +54,14 @@ export DOCKER_HOST="kiab.local:2375"
 
 Perhaps add this to your `bash.rc` file in your `HOME_DIR` so it works in the future. 
 
+## Nexus and docker registry
+KIAB is currently running Nexus 3 as its docker registry.  This can be accesses on your local machine via ['http://kiab.local:8081'](http://kiab.local:8081).  To use this Nexus as a container registry you must add KIAB to your `insecure-registries` on your local machine if you are using its local docker.  Alternately you can use the docker deamon hosted by KIAB and this insecure-registy is already added ( see the Docker section above for more info on how to configure this).  Once that is completed, simply run the `docker login http://kiab.local:5000` -  username: `admin`, password: `admin123`.
+
+The Username and Password the Nexus web GUI is `admin`/`admin123`
+
 ## FAQ:
 Q: Why no just run minikube or kubernetes in Docker?
-A: I can, and I do sometimes, however I was finding somethings about minikube to be a real pain to work with on my mac, espicially with later versions of OSx, so I thought it was just easier to run it all in a VM ( which is essentially what Minikube is doing anyways )
+A: I do sometimes, however I was finding some bugs and issues around minikube to be a real pain to work with on my mac, espicially with later versions of OSx, so I thought it was just easier to run it all in a VM ( which is essentially what Minikube is doing anyways )
 
 ## Useful Resources
 A primer on using kubectl from a docker user
