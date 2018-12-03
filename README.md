@@ -21,8 +21,9 @@ Software:
 ## Usage:
 To get started, simply clone this repo, then within it from CLI, run the command `vagrant up`.  This should download the VM image, start it and run the "provisioners" which actually do all the setup of the verious services for KIAB.
 
-Some useful vagrant commands:
+Some useful vagrant commands (note, these should be run from within this directory):
 * `vagrant up` - Starts and provisions the VM on your first run.
+* `vagrant ssh` - SSH's you into the VM where it can be administered
 * `vagrant provision` - Runs the provisioners, i.e. Ansible scripts that configure this system
 * `vagrant halt` - Suspends the VM
 * `vagrant snapshot` - Snapshots the VM in its current state
@@ -55,7 +56,7 @@ export DOCKER_HOST="kiab.local:2375"
 Perhaps add this to your `bash.rc` file in your `HOME_DIR` so it works in the future. 
 
 ## Nexus and docker registry
-KIAB is currently running Nexus 3 as its docker registry.  This can be accesses on your local machine via ['http://kiab.local:8081'](http://kiab.local:8081).  To use this Nexus as a container registry you must add KIAB to your `insecure-registries` on your local machine if you are using its local docker.  Alternately you can use the docker deamon hosted by KIAB and this insecure-registy is already added ( see the Docker section above for more info on how to configure this).  Once that is completed, simply run the `docker login http://kiab.local:5000` -  username: `admin`, password: `admin123`.
+KIAB is currently running Nexus 3 as its docker registry.  This can be accesses on your local machine via [http://kiab.local:8081](http://kiab.local:8081).  To use this Nexus as a container registry you must add KIAB to your `insecure-registries` on your local machine if you are using its local docker.  Alternately you can use the docker deamon hosted by KIAB and this insecure-registy is already added ( see the Docker section above for more info on how to configure this).  Once that is completed, simply run the `docker login http://kiab.local:5000` -  username: `admin`, password: `admin123`.
 
 The Username and Password the Nexus web GUI is `admin`/`admin123`
 
