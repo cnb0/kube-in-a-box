@@ -32,7 +32,7 @@ Some useful vagrant commands (note, these should be run from within this directo
 `kubectl` is a command line utility that is extremely useful for managing Kubernetes.  You can easily install it on your mac with brew, or you can use my [mac-dev-setup](https://github.com/nickmaccarthy/mac-dev-setup) playbook which installs it for you as well.  With `kubectl` installed and configured, you can now manage the kubernetes cluster runningon KIAB from your own mac's terminal.  When KIAB runs intially a `kubeconfig` is created which is synced to your local machine.  You can simply place this file `./kube-config` under `~/.kube/config` and your default config will now point to KIAB.
 
 ## Useful kubectl aliases
-Here are some useful `kubectrl` aliases I have used to help show pods, services, etc that are running in KIAB.  Simply add these to your local `.bashrc` file or equivelent on your local machine:
+Here are some useful `kubectrl` aliases I have used to help show pods, services, etc that are running in KIAB.  Simply add these to your local `.bashrc` file or equivelent on your local machine (assuming you have a mac with brew installed):
 
 ```
 alias pods="kubectl get pods --output=wide --all-namespaces"
@@ -40,6 +40,13 @@ alias nodes="kubectl get nodes --all-namespaces"
 alias services="kubectl get services --all-namespaces"
 alias cjobs="kubectl get cronjobs --all-namespaces"
 alias deployments="kubectl get deployments --all-namespaces"
+
+if [ -f $(brew --prefix)/etc/bash_completion ]; then
+. $(brew --prefix)/etc/bash_completion
+fi
+
+kubectl completion bash > $(brew --prefix)/etc/bash_completion.d/kubectl
+
 source <(kubectl completion bash)
 ```
 
