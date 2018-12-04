@@ -8,14 +8,15 @@
     dest: /etc/systemd/system/docker.service.d/docker.conf
   notify:
     - systemctl daemon-reload
-    - restart docker 
+    - docker restart 
 
 - name: docker daemon.json template
   template:
     src: docker/daemon.json
     dest: /etc/docker/daemon.json
   notify:
-    - restart docker 
+    - systemctl daemon-reload
+    - docker restart
 
-- name: flush handler 
-  meta: flush_handlers
+# - name: flush handler 
+#   meta: flush_handlers

@@ -52,8 +52,8 @@ Vagrant.configure("2") do |config|
        ansible.galaxy_role_file = "ansible/requirements.yml"
      end
 
-    config.trigger.after :provision do |trigger|
+    config.trigger.after :up, :provision do |trigger|
         trigger.info = "Copying kubeconfig from VM to local"
-        trigger.run = {inline: "vagrant scp :~/.kube/config-kiab ~/.kube/config-kiab"}
+        trigger.run = {inline: "bash -c 'vagrant scp :~/.kube/config-kiab ~/.kube/config-kiab'"}
     end 
 end
