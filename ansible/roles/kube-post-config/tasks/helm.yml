@@ -1,0 +1,23 @@
+- stat: 
+    path: /bin/helm
+  register: helm
+
+- debug:
+    msg: "{{ helm }}" 
+
+- name: wget helm file
+  shell: "cd /tmp && wget https://storage.googleapis.com/kubernetes-helm/helm-v{{helm_version}}-linux-amd64.tar.gz"
+  when: not helm.stat.exists
+
+- name: untar it 
+  shell: "cd /tmp && tar -zxvf helm-v{{helm_version}}-linux-amd64.tar.gz"
+  when: not helm.stat.exists
+
+- name: copy binaries
+  shell: cd /tmp && mv linux-amd64/helm /bin/helm && mv linux-amd64/tiller /bin/tiller 
+  when: not helm.stat.exists
+  register: copy_helm_binaries
+
+- name: helm init 
+  shell: helm init 
+  when: copy_helm_binaries is changed

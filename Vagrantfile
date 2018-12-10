@@ -56,4 +56,12 @@ Vagrant.configure("2") do |config|
         trigger.info = "Copying kubeconfig from VM to local"
         trigger.run = {inline: "bash -c 'vagrant scp :~/.kube/config-kiab ~/.kube/config-kiab'"}
     end 
+
+    if kiab_config.fetch(:overwrite_local_kubeconfig, false) 
+      config.trigger.after :up, :provision do |trigger|
+        trigger.info = "Overwriting local kubeconfig"
+        trigger.run = {inline: "bash -c 'cd ~/.kube && cp config-kiab config'"}
+      end 
+    end 
+
 end

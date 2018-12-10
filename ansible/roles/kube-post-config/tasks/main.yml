@@ -38,3 +38,5 @@
     src: /root/.kube/config 
     dest: ~/.kube/config-kiab 
     flat: true
+
+- include: helm.yml 

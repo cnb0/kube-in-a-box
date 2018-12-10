@@ -6,3 +6,5 @@ use_apache: false
 use_jenkins: false
 use_kubernetes: true 
 use_nexus: true
+
+overwrite_local_kubeconfig: true 
