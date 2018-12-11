@@ -68,5 +68,8 @@
       when: use_kubernetes 
     - role: kube-post-config
       when: use_kubernetes 
+    - role: kubernetes-dashboard
+    - role: kube-traefik
+      when: "kube_ingress_proxy == 'traefik'"
     - role: ansible-ThoTeam.nexus3-oss
       when: use_nexus 

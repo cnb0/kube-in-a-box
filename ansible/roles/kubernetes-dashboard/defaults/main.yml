@@ -1,0 +1,5 @@
+kube_deployment_dirs:
+  - /app/kubernetes_deployments 
+  - /app/kubernetes_deployments/master_deployments
+
+master_deployments_dir: "/app/kubernetes_deployments/master_deployments"

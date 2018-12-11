@@ -74,3 +74,32 @@ A: I do sometimes, however I was finding some bugs and issues around minikube to
 ## Useful Resources
 A primer on using kubectl from a docker user
 - https://kubernetes.io/docs/reference/kubectl/docker-cli-to-kubectl/
+
+
+## Traefik as an Ingress Controller
+If you set your `kube_ingress_proxy: traefik` in your `kiab.config.yaml`, KIAB will install [Traefik](https://www.traefik.io) as an [Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/) for your KIAB instance.  Out of the box KIAB is going to map and expose the following endpoints for you:
+
+Traefik UI - [http://kiab.local/](http://kiab.local)
+Official Kubernetes Dashboard - [http://kiab.local/kube-dashboard](http://kiab.local/kube-dashboard) (note: there is no authentication for this)
+
+If you wanted to add your own Ingress, simply add something like this:
+```
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: elk-kibana
+  namespace: kube-system
+  annotations:
+    kubernetes.io/ingress.class: traefik
+    traefik.frontend.rule.type: PathPrefixStrip
+spec:
+  rules:
+  - host: kiab.local
+    http:
+      paths:
+      - path: /elk-kibana
+        backend:
+          serviceName: elk-kibana
+          servicePort: 5601
+---

@@ -1,0 +1,7 @@
+- name: Create traefik deployment template.
+  template:
+    src: traefik-manifest.yaml
+    dest: "{{master_deployments_dir}}/traefik-manifest.yaml"
+
+- name: Apply the traefik deployment manifest.
+  shell: "kubectl apply -f {{master_deployments_dir}}/traefik-manifest.yaml"

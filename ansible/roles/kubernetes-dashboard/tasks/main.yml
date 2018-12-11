@@ -1,0 +1,7 @@
+- name: create kubernetes dashboard deployment
+  template:
+    src: kubernetes-dashboard.yaml 
+    dest: "{{master_deployments_dir}}/kubernetes-dashboard.yaml"
+
+- name: create the kube dashboard
+  shell: "kubectl apply -f {{master_deployments_dir}}/kubernetes-dashboard.yaml"

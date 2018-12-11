@@ -1,3 +1,7 @@
+#### Ansible Managed ###
+
+# Note this creates a dashboard that runs over http, and not https - this should not be used for production!
+
 # Copyright 2017 The Kubernetes Authors.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -114,7 +118,11 @@ spec:
         - containerPort: 8443
           protocol: TCP
         args:
-          - --auto-generate-certificates
+          - --enable-insecure-login
+          - --port=8444 # By default, https uses 8443 so we move it away to something else
+          - --insecure-port=8443 # The chart has 8443 hard coded as a containerPort in the deployment spec so we must use this internally for the http service
+          - --insecure-bind-address=0.0.0.0
+          #- --auto-generate-certificates
           # Uncomment the following line to manually specify Kubernetes API server Host
           # If not specified, Dashboard will attempt to auto discover the API server and connect
           # to it. Uncomment only if the default does not work.
@@ -127,7 +135,7 @@ spec:
           name: tmp-volume
         livenessProbe:
           httpGet:
-            scheme: HTTPS
+            scheme: HTTP
             path: /
             port: 8443
           initialDelaySeconds: 30
@@ -155,13 +163,26 @@ metadata:
   name: kubernetes-dashboard
   namespace: kube-system
 spec:
-  type: NodePort
   ports:
-    - nodePort: 30000
-      targetPort: 8443 
-      port: 8443
-  # ports:
-  #   - port: 443
-  #     targetPort: 8443
+    - port: 80
+      targetPort: 8443
   selector:
     k8s-app: kubernetes-dashboard
+
+---
+# -------------------- Skip Dashboard Autentication --------------#
+# DONT USE THIS IN PRODUCTION UNLESS YOU LIKE PAIN AND SADNESS!
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRoleBinding
+metadata:
+  name: kubernetes-dashboard
+  labels:
+    k8s-app: kubernetes-dashboard
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin
+subjects:
+- kind: ServiceAccount
+  name: kubernetes-dashboard
+  namespace: kube-system
