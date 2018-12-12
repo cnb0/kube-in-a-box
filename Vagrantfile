@@ -33,13 +33,13 @@ Vagrant.configure("2") do |config|
     
     config.vm.box = "geerlingguy/centos7"
     config.vm.hostname = "kiab"
-    config.vm.network "private_network", ip: kiab_config.fetch(:vm_ip_address, '192.168.100.100')
+    config.vm.network "private_network", ip: kiab_config.fetch("vm_ip_address", "192.168.100.100")
 
     config.hostmanager.aliases = %w(kiab.local kiab.localhost kiab)
 
     config.vm.provider "virtualbox" do |vb|
-      vb.cpus = kiab_config.fetch(:vm_cpus, 4)
-      vb.memory = kiab_config.fetch(:vm_memory, 4096)
+      vb.cpus = kiab_config.fetch("vm_cpus", 4).to_i
+      vb.memory = kiab_config.fetch("vm_memory", 4096).to_i
     end
 
      # Provision hostnmanager
@@ -57,8 +57,8 @@ Vagrant.configure("2") do |config|
         trigger.run = {inline: "bash -c 'vagrant scp :~/.kube/config-kiab ~/.kube/config-kiab'"}
     end 
 
-    if kiab_config.fetch(:overwrite_local_kubeconfig, false) 
-      config.trigger.after :up, :provision do |trigger|
+    if kiab_config.fetch("overwrite_local_kubeconfig", false) 
+      config.trigger.after :up, :provision, :reload do |trigger|
         trigger.info = "Overwriting local kubeconfig"
         trigger.run = {inline: "bash -c 'cd ~/.kube && cp config-kiab config'"}
       end 

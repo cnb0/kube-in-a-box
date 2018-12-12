@@ -20,6 +20,7 @@
         - htop
         - zip
         - unzip
+        - bind-utils
   vars_files:
     - ../kiab.config.yaml 
   vars:
@@ -70,6 +71,6 @@
       when: use_kubernetes 
     - role: kubernetes-dashboard
     - role: kube-traefik
-      when: "kube_ingress_proxy == 'traefik'"
+      when: "kube_ingress_controller == 'traefik'"
     - role: ansible-ThoTeam.nexus3-oss
       when: use_nexus 
