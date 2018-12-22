@@ -1,19 +1,23 @@
+#--------- Virtualbox Settings ---------#
 vm_ip_address: 192.168.100.100
-vm_memory: 4096
+vm_memory: 8192 
 vm_cpu: 4
+#--------- End Virtualbox Settings -------# 
 
 use_apache: false 
 use_jenkins: false
 use_kubernetes: true 
 use_nexus: true
 
-kube_ingress_proxy: traefik
+kube_ingress_controller: traefik
 
-overwrite_local_kubeconfig: true 
+overwrite_local_kubeconfig:  false 
 
 # Directories where to store the compiled kuernetes manifests
 kube_deployment_dirs:
-  - /app/kubernetes_deployments 
-  - /app/kubernetes_deployments/master_deployments
+  - /kubernetes/manifests
+  - /kubernetes/manifests/master
 
-master_deployments_dir: "/app/kubernetes_deployments/master_deployments"
+master_deployments_dir: "/kubernetes/manifests/master"
+
+network_overlay: weave

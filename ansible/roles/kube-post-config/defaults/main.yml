@@ -1,7 +1,9 @@
 kube_deployment_dirs:
-  - /app/kubernetes_deployments 
-  - /app/kubernetes_deployments/master_deployments
+  - /kubernetes_manifests
+  - /kubernetes_manifests/master
 
-master_deployments_dir: "/app/kubernetes_deployments/master_deployments"
+master_deployments_dir: "/kubernetes_manifests/master"
 
 helm_version: 2.11.0
+
+network_overlay: ''

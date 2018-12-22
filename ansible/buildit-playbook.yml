@@ -49,9 +49,14 @@
     nexus_npm_bearer_token_realm: true
     nexus_docker_bearer_token_realm: true
 
+    kubernetes_version: '1.13'
+    kubernetes_version_rhel_package: '1.13.0'
     kubernetes_apiserver_advertise_address: "{{ vm_ip_address }}"
+    kubernetes_role: "master"
     kubernetes_allow_pods_on_master: true
-    kubernetes_enable_web_ui: true
+    kubernetes_enable_web_ui: false
+    kubernetes_kubeadm_init_token: "5wkypz.tc90jw7qtj3f1fvm"
+    kubernetes_kubeadm_init_extra_opts: "--service-dns-domain='kiab.local' --apiserver-cert-extra-sans='kiab.local' --token='{{kubernetes_kubeadm_init_token}}'" 
 
   roles:
     - role: geerlingguy.apache
@@ -70,7 +75,15 @@
     - role: kube-post-config
       when: use_kubernetes 
     - role: kubernetes-dashboard
-    - role: kube-traefik
+
+    # Ingress Controllers 
+    - role: kiab-traefik
       when: "kube_ingress_controller == 'traefik'"
+
+    - role: kiab-envoy 
+      when: "kube_ingress_controller == 'envoy'" 
+
+
     - role: ansible-ThoTeam.nexus3-oss
       when: use_nexus 
+  

@@ -40,6 +40,7 @@ Vagrant.configure("2") do |config|
     config.vm.provider "virtualbox" do |vb|
       vb.cpus = kiab_config.fetch("vm_cpus", 4).to_i
       vb.memory = kiab_config.fetch("vm_memory", 4096).to_i
+      vb.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
     end
 
      # Provision hostnmanager
