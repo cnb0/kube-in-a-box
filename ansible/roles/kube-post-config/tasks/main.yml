@@ -40,4 +40,23 @@
     dest: ~/.kube/config-kiab 
     flat: true
 
+- name: Create storage directories
+  file:
+    path: "{{ item }}"
+    state: directory 
+    owner: root
+    group: root
+    mode: 0777 
+  with_items:
+    - /data
+    - /data/pv001
+
+- name: Create storage template . 
+  template:
+    src: storage.yaml 
+    dest: "{{ master_deployments_dir }}/storage.yaml"
+
+- name: kubectl apply the storage manifest .
+  shell: "kubectl apply -f {{ master_deployments_dir }}/storage.yaml" 
+
 - include: helm.yml 

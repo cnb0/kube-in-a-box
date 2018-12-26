@@ -35,6 +35,12 @@ Vagrant.configure("2") do |config|
     config.vm.hostname = "kiab"
     config.vm.network "private_network", ip: kiab_config.fetch("vm_ip_address", "192.168.100.100")
 
+    if kiab_config.fetch('vm_public_network', false)
+      config.vm.network "public_network"  
+    end 
+
+    config.vm.network "forwarded_port", guest: 8080, host: 8181
+
     config.hostmanager.aliases = %w(kiab.local kiab.localhost kiab)
 
     config.vm.provider "virtualbox" do |vb|
